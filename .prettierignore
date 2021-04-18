@@ -1,3 +1,10 @@
 # yarn v2
 .yarn
 .pnp.*
+.yarnrc.yml
+
+# vscode
+.vscode
+
+# tsc output
+packages/*/dist/*
