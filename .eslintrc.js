@@ -10,7 +10,6 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
     'prettier',
-    'prettier/@typescript-eslint',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -28,11 +27,13 @@ module.exports = {
     'linebreak-style': ['error', 'unix'],
     'max-len': ['error', { code: 100, ignoreUrls: true, ignoreComments: true }],
     'no-undef': 'error',
-    'no-unused-vars': ['error', { vars: 'all', args: 'none', ignoreRestSiblings: false }],
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['error'],
     'no-var': ['error'],
     'object-shorthand': 'error',
     'prefer-const': ['error', { destructuring: 'any' }],
     quotes: 'off',
     semi: ['error', 'never'],
+    'no-param-reassign': ['error'],
   },
 }

@@ -1,5 +1,5 @@
 {
-  "name": "qr-suite",
+  "name": "@qr-suite/monorepo",
   "private": true,
   "license": "MIT",
   "workspaces": [
@@ -7,7 +7,10 @@
   ],
   "scripts": {
     "eslint": "eslint",
-    "prettier": "prettier --check ."
+    "prettier": "prettier --check .",
+    "build": "yarn workspaces foreach -v -i -p -t run build",
+    "clean": "yarn workspaces foreach -v -i -p -t run clean",
+    "compile": "yarn workspaces foreach -v -i -p -t run compile"
   },
   "repository": {
     "type": "git",
@@ -22,6 +25,8 @@
     "@typescript-eslint/parser": "^4.22.0",
     "eslint": "^7.24.0",
     "eslint-config-prettier": "^8.2.0",
+    "eslint-import-resolver-node": "^0.3.4",
+    "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.4.0",
     "prettier": "^2.2.1",
     "typescript": "^4.2.4"
