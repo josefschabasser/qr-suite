@@ -161,13 +161,13 @@ export function fillTemplate(message: EncodedData, template: QRData): QRData {
   return template
 }
 
-export function QR(
+export function matrix(
   text: string,
-  ec_level: keyof typeof EcLevel = 'M',
-  parse_url = false,
+  ecLevel: keyof typeof EcLevel = 'M',
+  parseUrl = false,
 ): number[][] {
-  const message = encode(text, parse_url)
-  const data = fillTemplate(message, getTemplate(message, EcLevel[ec_level]))
+  const message = encode(text, parseUrl)
+  const data = fillTemplate(message, getTemplate(message, EcLevel[ecLevel]))
   const result = getMatrix(data)
   return result
 }
