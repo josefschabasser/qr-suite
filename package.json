@@ -1,5 +1,5 @@
 {
-  "name": "qr-suite",
+  "name": "@qr-suite/monorepo",
   "private": true,
   "license": "MIT",
   "workspaces": [
@@ -8,7 +8,9 @@
   "scripts": {
     "eslint": "eslint",
     "prettier": "prettier --check .",
-    "build": "yarn workspaces foreach -v -i -p -t run build"
+    "build": "yarn workspaces foreach -v -i -p -t run build",
+    "clean": "yarn workspaces foreach -v -i -p -t run clean",
+    "compile": "yarn workspaces foreach -v -i -p -t run compile"
   },
   "repository": {
     "type": "git",
