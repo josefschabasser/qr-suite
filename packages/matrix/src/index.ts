@@ -3,6 +3,8 @@ import { calculateEc } from './errorcode'
 import { getMatrix } from './matrix'
 import { EcLevel, QRData, EncodedData } from './datatypes'
 
+export { EcLevel }
+
 export type QRVersionList = {
   [key in keyof typeof EcLevel]?: QRData
 }
