@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": "./packages",
     "paths": {
-      "@qr-suite/matrix": ["matrix/src"]
+      "@qr-suite/*": ["*/src"]
     },
     "types": ["node"]
   }
