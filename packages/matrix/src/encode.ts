@@ -1,14 +1,14 @@
 import { EncodedData, Encoding } from './datatypes'
 
-function pushBits(arr: number[], n: number, value: number): void {
-  for (let bit = 1 << (n - 1); bit; bit >>>= 1) {
+function pushBits(arr: number[], size: number, value: number): void {
+  for (let bit = 1 << (size - 1); bit; bit >>>= 1) {
     arr.push(bit & value ? 1 : 0)
   }
 }
 
-function getData(encoding: number[], length: number, num: number, bits: number[]): number[] {
+function getData(encoding: number[], length: number, size: number, bits: number[]): number[] {
   const d = encoding.slice()
-  pushBits(d, num, length)
+  pushBits(d, size, length)
   return d.concat(bits)
 }
 
