@@ -1,6 +1,6 @@
 {
-  "name": "@qr-suite/matrix",
-  "license": "MIT",
+  "name": "@qr-suite/terminal",
+  "licence": "MIT",
   "version": "0.0.1",
   "main": "dist/main",
   "types": "dist/main",
@@ -16,5 +16,9 @@
     "@types/node": "^14.14.41",
     "rimraf": "^3.0.2",
     "typescript": "^4.2.4"
+  },
+  "dependencies": {
+    "@qr-suite/matrix": "^0.0.1",
+    "chalk": "^4.1.0"
   }
 }
