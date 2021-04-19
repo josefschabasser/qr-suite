@@ -24,6 +24,7 @@ export const Encoding = {
   Numeric: [0, 0, 0, 1],
   Alphanumeric: [0, 0, 1, 0],
   Byte: [0, 1, 0, 0],
+  // currently the following encodings are not supported
   Kanji: [1, 0, 0, 0],
   StructuredAppend: [0, 0, 1, 1],
   ECI: [0, 1, 1, 1],

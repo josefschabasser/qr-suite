@@ -1,17 +1,5 @@
 import { EncodedData, Encoding } from './datatypes'
 
-interface ArrStr {
-  [key: string]: number
-}
-
-const ALPHANUM = (function (s: string): ArrStr {
-  const result: ArrStr = {}
-  for (let i = 0; i < s.length; i++) {
-    result[s[i]] = i
-  }
-  return result
-})('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:')
-
 function pushBits(arr: number[], n: number, value: number): void {
   for (let bit = 1 << (n - 1); bit; bit >>>= 1) {
     arr.push(bit & value ? 1 : 0)
@@ -41,21 +29,22 @@ function encode8Bit(data: Buffer): EncodedData {
   return result
 }
 
-function encodeAlphanum(data: string): EncodedData {
+function encodeAlphanumeric(data: string): EncodedData {
+  const charset = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:'
   const encoding = Encoding.Alphanumeric
   const length = data.length
   const bits: number[] = []
   const result = (): EncodedData => ({ data1: [], data10: [], data27: [] })
 
   for (let i = 0; i < length; i += 2) {
-    let b = 6
-    let n = ALPHANUM[data[i]]
+    let size = 6
+    let value = charset.indexOf(data[i])
 
     if (data[i + 1]) {
-      b = 11
-      n = n * 45 + ALPHANUM[data[i + 1]]
+      size = 11
+      value = 45 * value + charset.indexOf(data[i + 1])
     }
-    pushBits(bits, b, n)
+    pushBits(bits, size, value)
   }
 
   result.data27 = getData(encoding, length, 13, bits)
@@ -128,7 +117,7 @@ export function encode(data: string | number | Buffer | number[], parseUrl: bool
   }
   if (/^[0-9A-Z $%*+./:-]+$/.test(str)) {
     if (buf.length > 4296) throw new Error('Too much data')
-    return encodeAlphanum(str)
+    return encodeAlphanumeric(str)
   }
   if (parseUrl && /^https?:/i.test(str)) {
     return encodeUrl(str)
