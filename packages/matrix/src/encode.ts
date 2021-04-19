@@ -134,7 +134,6 @@ function encodeNumeric(data: string): EncodedData {
  * @returns {EncodedData} The encoded data for all versions.
  */
 function encodeUrl(data: string): EncodedData {
-  console.log('URL')
   const slash = data.indexOf('/', 8) + 1 || data.length
   const result = encode(data.slice(0, slash).toUpperCase(), false)
 
