@@ -19,3 +19,15 @@ export enum EcLevel {
   'Q',
   'H',
 }
+
+export const Encoding = {
+  Numeric: [0, 0, 0, 1],
+  Alphanumeric: [0, 0, 1, 0],
+  Byte: [0, 1, 0, 0],
+  Kanji: [1, 0, 0, 0],
+  StructuredAppend: [0, 0, 1, 1],
+  ECI: [0, 1, 1, 1],
+  FNC1FirstPosition: [0, 1, 0, 1],
+  FNC1SecondPosition: [1, 0, 0, 1],
+  EndOfMessage: [0, 0, 0, 0],
+}

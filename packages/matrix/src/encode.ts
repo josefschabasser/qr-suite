@@ -1,4 +1,4 @@
-import { EncodedData } from './datatypes'
+import { EncodedData, Encoding } from './datatypes'
 
 interface ArrStr {
   [key: string]: number
@@ -18,14 +18,14 @@ function pushBits(arr: number[], n: number, value: number): void {
   }
 }
 
-function getData(preset: number[], length: number, num: number, bits: number[]): number[] {
-  const d = preset.slice()
+function getData(encoding: number[], length: number, num: number, bits: number[]): number[] {
+  const d = encoding.slice()
   pushBits(d, num, length)
   return d.concat(bits)
 }
 
 function encode8Bit(data: Buffer): EncodedData {
-  const preset = [0, 1, 0, 0]
+  const encoding = Encoding.Byte
   const length = data.length
   const bits: number[] = []
   const result = (): EncodedData => ({ data1: [], data10: [], data27: [] })
@@ -34,15 +34,15 @@ function encode8Bit(data: Buffer): EncodedData {
     pushBits(bits, 8, data[i])
   }
 
-  result.data10 = result.data27 = getData(preset, length, 16, bits)
+  result.data10 = result.data27 = getData(encoding, length, 16, bits)
   if (length < 256) {
-    result.data1 = getData(preset, length, 8, bits)
+    result.data1 = getData(encoding, length, 8, bits)
   }
   return result
 }
 
 function encodeAlphanum(data: string): EncodedData {
-  const preset = [0, 0, 1, 0]
+  const encoding = Encoding.Alphanumeric
   const length = data.length
   const bits: number[] = []
   const result = (): EncodedData => ({ data1: [], data10: [], data27: [] })
@@ -58,28 +58,28 @@ function encodeAlphanum(data: string): EncodedData {
     pushBits(bits, b, n)
   }
 
-  result.data27 = getData(preset, length, 13, bits)
+  result.data27 = getData(encoding, length, 13, bits)
   if (length < 2048) {
-    result.data10 = getData(preset, length, 11, bits)
+    result.data10 = getData(encoding, length, 11, bits)
   }
   if (length < 512) {
-    result.data1 = getData(preset, length, 9, bits)
+    result.data1 = getData(encoding, length, 9, bits)
   }
   return result
 }
 
 function encodeNumeric(data: string): EncodedData {
-  const preset = [0, 0, 0, 1]
+  const encoding = Encoding.Numeric
   const length = data.length
   const bits: number[] = []
   const result = (): EncodedData => ({ data1: [], data10: [], data27: [] })
 
-  result.data27 = getData(preset, length, 14, bits)
+  result.data27 = getData(encoding, length, 14, bits)
   if (length < 4096) {
-    result.data10 = getData(preset, length, 12, bits)
+    result.data10 = getData(encoding, length, 12, bits)
   }
   if (length < 1024) {
-    result.data1 = getData(preset, length, 10, bits)
+    result.data1 = getData(encoding, length, 10, bits)
   }
   return result
 }
