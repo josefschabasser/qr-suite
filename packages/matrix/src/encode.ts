@@ -13,8 +13,7 @@ function pushBits(arr: number[], size: number, value: number): void {
 }
 
 /**
- * Packs encoded data into an element containing encoding and length information.
- * The resulting array is `[Encoding:4] [Length:variable] [Data:variable]`
+ * Packs encoded data into an element containing encoding and length information. The resulting array is `[Encoding:4] [Length:variable] [Data:variable]`
  * @param {number[]} encoding The encoding to use.
  * @param {number} length The length of the data.
  * @param {number} size The size of one character.
@@ -71,8 +70,7 @@ function encodeAlphanumeric(data: string): EncodedData {
     DataVersionHigh: [],
   })
 
-  // encode 2 characters at once
-  // 2 charaters are 11 bits, the last character is 6 bits
+  // encode 2 characters at once. 2 charaters are 11 bits, the last character is 6 bits
   for (let i = 0; i < length; i += 2) {
     let size = 6
     let value = charset.indexOf(data[i])
@@ -127,13 +125,12 @@ function encodeNumeric(data: string): EncodedData {
 }
 
 /**
- * Encode a single URL (experimental).
- * The protocol and hostname (e.g. `https://github.com/`) are treated like alphanumeric data to
- * save space, the following path is treated like binary data.
+ * Encode a single URL (experimental). The protocol and hostname (e.g. `https://github.com/`) are treated like alphanumeric data to save space, the following path is treated like binary data.
  * @param {string} data The URL to encode.
  * @returns {EncodedData} The encoded data for all versions.
  */
 function encodeUrl(data: string): EncodedData {
+  // first encode protocol and hostname as alphanumeric to save space (2 chars at once)
   const slash = data.indexOf('/', 8) + 1 || data.length
   const result = encode(data.slice(0, slash).toUpperCase(), false)
 
@@ -141,6 +138,7 @@ function encodeUrl(data: string): EncodedData {
     return result
   }
 
+  // then encode path als binary data, as it could contain invalid characters for alphanumeric encoding
   const pathResult = encode(data.slice(slash), false)
 
   result.DataVersionHigh = result.DataVersionHigh.concat(pathResult.DataVersionHigh)
