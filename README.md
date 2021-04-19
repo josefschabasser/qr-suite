@@ -1,6 +1,6 @@
 # @qr-suite
 
-This will be a bunch of QR code related libraries and tools, but mostly ports to TypeScript.  
+This will be a bunch of QR code related libraries and tools written in (or ported to) TypeScript.  
 The goal is to be highly modular (don't want the terminal stuff, then don't install it).
 
 ## @qr-suite/matrix
