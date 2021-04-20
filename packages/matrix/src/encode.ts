@@ -2,9 +2,9 @@ import { EncodedData, Encoding } from './datatypes'
 
 /**
  * Encodes a character and pushes the results onto an array.
- * @param arr The target array to push onto.
- * @param size The size of the charater to encode.
- * @param value The charater to encode.
+ * @param arr - The target array to push onto.
+ * @param size - The size of the charater to encode.
+ * @param value - The charater to encode.
  */
 function pushBits(arr: number[], size: number, value: number): void {
   for (let bit = 1 << (size - 1); bit; bit >>>= 1) {
@@ -14,10 +14,10 @@ function pushBits(arr: number[], size: number, value: number): void {
 
 /**
  * Packs encoded data into an element containing encoding and length information. The resulting array is `[Encoding:4] [Length:variable] [Data:variable]`
- * @param encoding The encoding to use.
- * @param length The length of the data.
- * @param size The size of one character.
- * @param bits The data to work on.
+ * @param encoding - The encoding to use.
+ * @param length - The length of the data.
+ * @param size - The size of one character.
+ * @param bits - The data to work on.
  * @returns The packed data, encoding and length information.
  */
 function getData(encoding: number[], length: number, size: number, bits: number[]): number[] {
@@ -28,7 +28,7 @@ function getData(encoding: number[], length: number, size: number, bits: number[
 
 /**
  * Encodes 8bit binary data.
- * @param data Binary data to encode, 8 bits/character.
+ * @param data - Binary data to encode, 8 bits/character.
  * @returns The encoded data for all versions.
  */
 function encode8Bit(data: Buffer | Array<number>): EncodedData {
@@ -56,7 +56,7 @@ function encode8Bit(data: Buffer | Array<number>): EncodedData {
 
 /**
  * Encodes alphanumeric data. Only 45 characters are valid and must be checked beforehand.
- * @param data Alphanumeric data to encode, valid characters are `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:`
+ * @param data - Alphanumeric data to encode, valid characters are `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:`
  * @returns The encoded data for all versions.
  */
 function encodeAlphanumeric(data: string): EncodedData {
@@ -94,7 +94,7 @@ function encodeAlphanumeric(data: string): EncodedData {
 
 /**
  * Encodes numeric data.
- * @param data Numeric data to encode.
+ * @param data - Numeric data to encode.
  * @returns The encoded data for all versions.
  */
 function encodeNumeric(data: string): EncodedData {
@@ -126,7 +126,7 @@ function encodeNumeric(data: string): EncodedData {
 
 /**
  * Encode a single URL (experimental). The protocol and hostname (e.g. `https://github.com/`) are treated like alphanumeric data to save space, the following path is treated like binary data.
- * @param data The URL to encode.
+ * @param data - The URL to encode.
  * @returns The encoded data for all versions.
  */
 function encodeUrl(data: string): EncodedData {
@@ -153,8 +153,8 @@ function encodeUrl(data: string): EncodedData {
 
 /**
  * Encodes data using a method that fits the data type.
- * @param data The data to encode.
- * @param parseUrl Flag wheter to optimize the resulting data for URLs.
+ * @param data - The data to encode.
+ * @param parseUrl - Flag wheter to optimize the resulting data for URLs.
  * @returns The encoded data for all versions.
  */
 export function encode(data: string | number | Buffer | number[], parseUrl: boolean): EncodedData {
