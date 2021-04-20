@@ -2,9 +2,9 @@ import { EncodedData, Encoding } from './datatypes'
 
 /**
  * Encodes a character and pushes the results onto an array.
- * @param {number[]} arr The target array to push onto.
- * @param {number} size The size of the charater to encode.
- * @param {number} value The charater to encode.
+ * @param arr The target array to push onto.
+ * @param size The size of the charater to encode.
+ * @param value The charater to encode.
  */
 function pushBits(arr: number[], size: number, value: number): void {
   for (let bit = 1 << (size - 1); bit; bit >>>= 1) {
@@ -14,11 +14,11 @@ function pushBits(arr: number[], size: number, value: number): void {
 
 /**
  * Packs encoded data into an element containing encoding and length information. The resulting array is `[Encoding:4] [Length:variable] [Data:variable]`
- * @param {number[]} encoding The encoding to use.
- * @param {number} length The length of the data.
- * @param {number} size The size of one character.
- * @param {number[]} bits The data to work on.
- * @returns {number[]} The packed data, encoding and length information.
+ * @param encoding The encoding to use.
+ * @param length The length of the data.
+ * @param size The size of one character.
+ * @param bits The data to work on.
+ * @returns The packed data, encoding and length information.
  */
 function getData(encoding: number[], length: number, size: number, bits: number[]): number[] {
   const d = encoding.slice()
@@ -28,8 +28,8 @@ function getData(encoding: number[], length: number, size: number, bits: number[
 
 /**
  * Encodes 8bit binary data.
- * @param {Buffer} data Binary data to encode, 8 bits/character.
- * @returns {EncodedData} The encoded data for all versions.
+ * @param data Binary data to encode, 8 bits/character.
+ * @returns The encoded data for all versions.
  */
 function encode8Bit(data: Buffer | Array<number>): EncodedData {
   const encoding = Encoding.Byte
@@ -56,8 +56,8 @@ function encode8Bit(data: Buffer | Array<number>): EncodedData {
 
 /**
  * Encodes alphanumeric data. Only 45 characters are valid and must be checked beforehand.
- * @param {string} data Alphanumeric data to encode, valid characters are `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:`
- * @returns {EncodedData} The encoded data for all versions.
+ * @param data Alphanumeric data to encode, valid characters are `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:`
+ * @returns The encoded data for all versions.
  */
 function encodeAlphanumeric(data: string): EncodedData {
   const charset = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:'
@@ -94,8 +94,8 @@ function encodeAlphanumeric(data: string): EncodedData {
 
 /**
  * Encodes numeric data.
- * @param {string} data Numeric data to encode.
- * @returns {EncodedData} The encoded data for all versions.
+ * @param data Numeric data to encode.
+ * @returns The encoded data for all versions.
  */
 function encodeNumeric(data: string): EncodedData {
   const encoding = Encoding.Numeric
@@ -126,8 +126,8 @@ function encodeNumeric(data: string): EncodedData {
 
 /**
  * Encode a single URL (experimental). The protocol and hostname (e.g. `https://github.com/`) are treated like alphanumeric data to save space, the following path is treated like binary data.
- * @param {string} data The URL to encode.
- * @returns {EncodedData} The encoded data for all versions.
+ * @param data The URL to encode.
+ * @returns The encoded data for all versions.
  */
 function encodeUrl(data: string): EncodedData {
   // first encode protocol and hostname as alphanumeric to save space (2 chars at once)
@@ -153,9 +153,9 @@ function encodeUrl(data: string): EncodedData {
 
 /**
  * Encodes data using a method that fits the data type.
- * @param {string|number|Buffer|number[]} data The data to encode.
- * @param {boolean} parseUrl Flag wheter to optimize the resulting data for URLs.
- * @returns {EncodedData} The encoded data for all versions.
+ * @param data The data to encode.
+ * @param parseUrl Flag wheter to optimize the resulting data for URLs.
+ * @returns The encoded data for all versions.
  */
 export function encode(data: string | number | Buffer | number[], parseUrl: boolean): EncodedData {
   let str: string
