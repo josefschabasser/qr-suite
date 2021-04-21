@@ -157,7 +157,6 @@ export function matrix(
 ): number[][] {
   const message = encode(text, parseUrl)
   const data = fillTemplate(message, getTemplate(message, EcLevel[ecLevel]))
-  console.log(data)
   const result = getMatrix(data)
   return result
 }
