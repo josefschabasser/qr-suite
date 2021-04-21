@@ -31,17 +31,17 @@ function getData(encoding: number[], length: number, size: number, bits: number[
  * @param data - Binary data to encode, 8 bits/character.
  * @returns The encoded data for all versions.
  */
-function encode8Bit(data: Buffer | Array<number>): EncodedData {
+function encodeByte(data: number[]): EncodedData {
   const encoding = Encoding.Byte
   const length = data.length
   const bits: number[] = []
-  const result = (): EncodedData => ({
+  const result: EncodedData = {
     DataVersionLow: [],
     DataVersionMid: [],
     DataVersionHigh: [],
-  })
+  }
 
-  // encode characters one by one, 8 bits/character
+  // encode characters one by one, 8 bits
   for (let i = 0; i < length; i++) {
     pushBits(bits, 8, data[i])
   }
@@ -64,13 +64,14 @@ function encodeAlphanumeric(data: string): EncodedData {
   const encoding = Encoding.Alphanumeric
   const length = data.length
   const bits: number[] = []
-  const result = (): EncodedData => ({
+  const result: EncodedData = {
     DataVersionLow: [],
     DataVersionMid: [],
     DataVersionHigh: [],
-  })
+  }
 
-  // encode 2 characters at once. 2 charaters are 11 bits, the last character is 6 bits
+  // encode 2 characters, 10 bits, 5.5 bits/character
+  // or 1 character, 6 bits
   for (let i = 0; i < length; i += 2) {
     let size = 6
     let value = charset.indexOf(data[i])
@@ -101,13 +102,13 @@ function encodeNumeric(data: string): EncodedData {
   const encoding = Encoding.Numeric
   const length = data.length
   const bits: number[] = []
-  const result = (): EncodedData => ({
+  const result: EncodedData = {
     DataVersionLow: [],
     DataVersionMid: [],
     DataVersionHigh: [],
-  })
+  }
 
-  // encode 3 characters at once with dynamic char size
+  // encode 3 characters at once, 10 bits, 3.3 bits/character
   for (let i = 0; i < length; i += 3) {
     const s = data.substr(i, 3)
     const b = Math.ceil((length * 10) / 3)
@@ -157,21 +158,18 @@ function encodeUrl(data: string): EncodedData {
  * @param parseUrl - Flag wheter to optimize the resulting data for URLs.
  * @returns The encoded data for all versions.
  */
-export function encode(data: string | number | Buffer | number[], parseUrl: boolean): EncodedData {
+export function encode(data: string | number | number[], parseUrl: boolean): EncodedData {
   let str: string
-  let buf: Buffer
+  let buf: number[]
   const t = typeof data
 
   // prepare the data
   if (t === 'string' || t === 'number') {
     str = `${data}`
-    buf = Buffer.from(str)
-  } else if (Buffer.isBuffer(data)) {
-    str = data.toString()
-    buf = data
+    buf = str.split('').map((x) => x.charCodeAt(0))
   } else if (Array.isArray(data)) {
     str = data.toString()
-    buf = Buffer.from(data)
+    buf = data.slice()
   } else {
     throw new Error('Bad data')
   }
@@ -191,5 +189,5 @@ export function encode(data: string | number | Buffer | number[], parseUrl: bool
   if (buf.length > 2953) {
     throw new Error('Too much data')
   }
-  return encode8Bit(buf)
+  return encodeByte(buf)
 }
