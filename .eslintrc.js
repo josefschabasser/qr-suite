@@ -16,7 +16,7 @@ module.exports = {
     ecmaVersion: 2020,
     sourceType: 'module',
   },
-  plugins: ['import', '@typescript-eslint', 'prettier'],
+  plugins: ['import', '@typescript-eslint', 'tsdoc', 'prettier'],
   rules: {
     '@typescript-eslint/no-shadow': 'error',
     'arrow-body-style': ['error', 'as-needed'],
@@ -35,5 +35,6 @@ module.exports = {
     quotes: 'off',
     semi: ['error', 'never'],
     'no-param-reassign': ['error'],
+    'tsdoc/syntax': 'warn',
   },
 }
