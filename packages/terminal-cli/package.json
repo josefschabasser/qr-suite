@@ -1,12 +1,12 @@
 {
-  "name": "terminal-cli",
+  "name": "@qr-suite/terminal-cli",
   "licence": "MIT",
   "version": "0.0.1",
   "files": [
     "dist"
   ],
   "bin": {
-    "qrterm": "dist/main.js"
+    "qrsuite-terminal": "dist/main.js"
   },
   "scripts": {
     "build": "yarn clean && yarn compile",
@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@qr-suite/terminal": "^0.0.1",
-    "chalk": "^4.1.1"
+    "chalk": "^4.1.1",
+    "yargs": "^16.2.0"
   }
 }
