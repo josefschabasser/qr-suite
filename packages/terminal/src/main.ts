@@ -1,13 +1,24 @@
 import { matrix, EcLevel } from '@qr-suite/matrix'
 import { EOL } from 'os'
 
+/** Options to customize the generated QR code. */
 export interface Options {
+  /** The error correction level to use. */
   ecLevel: keyof typeof EcLevel
+  /** Try to optimize the QR code for URLs, experimental. */
   parseUrl: boolean
+  /** The size of the resulting QR code, `S` is distorted but saves characters. */
   size: 'S' | 'M' | 'L'
+  /** Add borders (quiet zone) around the QR code. */
   border: boolean
 }
 
+/**
+ * Generates QR codes suitable for terminals.
+ * @param text - The text to encode.
+ * @param options - Options to customize the outcome.
+ * @returns An array of strings containing the QR code (line by line).
+ */
 export function terminal(text: string, options?: Partial<Options>): string {
   const opts = Object.assign(
     {
@@ -19,6 +30,7 @@ export function terminal(text: string, options?: Partial<Options>): string {
     options,
   )
 
+  // generate a QR code matrix and add borders
   const moduleData = matrix(text, opts.ecLevel, opts.parseUrl)
   if (opts.border) {
     moduleData.forEach((x) => {
@@ -35,6 +47,8 @@ export function terminal(text: string, options?: Partial<Options>): string {
   let pattern: string[]
   let stepX: number, stepY: number
 
+  // prepare unicode characters and step sizes
+  // see unicode characters: https://www.compart.com/unicode/block/U+2580
   switch (opts.size) {
     case 'S':
       stepX = stepY = 2
@@ -59,24 +73,17 @@ export function terminal(text: string, options?: Partial<Options>): string {
       break
     case 'L':
       stepX = stepY = 1
-      pattern = [
-        '\u2588\u2588', // 0
-        '  ', //           1
-      ]
+      pattern = ['\u2588\u2588', '  ']
       break
     case 'M':
     default:
       stepX = 1
       stepY = 2
-      pattern = [
-        '\u2588', // 0 \n 0
-        '\u2580', // 0 \n 1
-        '\u2584', // 1 \n 0
-        ' ', //      1 \n 1
-      ]
+      pattern = ['\u2588', '\u2580', '\u2584', ' ']
       break
   }
 
+  // add empty row if S|M and odd number of rows
   if (opts.size !== 'L' && moduleCount % 2 === 1) {
     moduleData.push(new Array(moduleCount).fill(0))
   }
@@ -84,6 +91,7 @@ export function terminal(text: string, options?: Partial<Options>): string {
   for (let y = 0; y < moduleCount; y += stepY) {
     let line = ''
     for (let x = 0; x < moduleCount; x += stepX) {
+      // build pattern index to directly access patterns from above
       let pat = 0
       switch (opts.size) {
         case 'S':

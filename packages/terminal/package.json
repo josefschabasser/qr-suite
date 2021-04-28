@@ -18,7 +18,6 @@
     "typescript": "^4.2.4"
   },
   "dependencies": {
-    "@qr-suite/matrix": "^0.0.1",
-    "chalk": "^4.1.0"
+    "@qr-suite/matrix": "^0.0.1"
   }
 }
