@@ -19,27 +19,26 @@ export function terminal(text: string, options?: Partial<Options>): string {
     options,
   )
 
-  const m = matrix(text, opts.ecLevel, opts.parseUrl)
+  const moduleData = matrix(text, opts.ecLevel, opts.parseUrl)
   if (opts.border) {
-    m.forEach((x) => {
+    moduleData.forEach((x) => {
       x.unshift(0)
       x.push(0)
     })
-    const l = m[0].length
-    m.unshift(new Array<number>(l).fill(0))
-    m.push(new Array<number>(l).fill(0))
+    const l = moduleData[0].length
+    moduleData.unshift(new Array<number>(l).fill(0))
+    moduleData.push(new Array<number>(l).fill(0))
   }
 
-  const msg: string[] = []
-  const moduleCount = m.length
-  const moduleData = m.slice()
-  const oddRow = moduleCount % 2 === 1
-  let modulePattern: string[]
+  const message: string[] = []
+  const moduleCount = moduleData.length
+  let pattern: string[]
   let stepX: number, stepY: number
+
   switch (opts.size) {
     case 'S':
       stepX = stepY = 2
-      modulePattern = [
+      pattern = [
         '\u2588', // 00 \n 00
         '\u259B', // 00 \n 01
         '\u259C', // 00 \n 10
@@ -60,7 +59,7 @@ export function terminal(text: string, options?: Partial<Options>): string {
       break
     case 'L':
       stepX = stepY = 1
-      modulePattern = [
+      pattern = [
         '\u2588\u2588', // 0
         '  ', //           1
       ]
@@ -69,7 +68,7 @@ export function terminal(text: string, options?: Partial<Options>): string {
     default:
       stepX = 1
       stepY = 2
-      modulePattern = [
+      pattern = [
         '\u2588', // 0 \n 0
         '\u2580', // 0 \n 1
         '\u2584', // 1 \n 0
@@ -78,8 +77,8 @@ export function terminal(text: string, options?: Partial<Options>): string {
       break
   }
 
-  if (opts.size !== 'L') {
-    if (oddRow) moduleData.push(new Array(moduleCount).fill(0))
+  if (opts.size !== 'L' && moduleCount % 2 === 1) {
+    moduleData.push(new Array(moduleCount).fill(0))
   }
 
   for (let y = 0; y < moduleCount; y += stepY) {
@@ -102,10 +101,10 @@ export function terminal(text: string, options?: Partial<Options>): string {
           pat |= moduleData[y + 1][x]
           break
       }
-      line += modulePattern[pat]
+      line += pattern[pat]
     }
-    msg.push(line)
+    message.push(line)
   }
 
-  return msg.join(EOL)
+  return message.join(EOL)
 }
