@@ -4,7 +4,7 @@ import { EOL } from 'os'
 export interface Options {
   ecLevel: keyof typeof EcLevel
   parseUrl: boolean
-  size: 'small' | 'medium' | 'large'
+  size: 'S' | 'M' | 'L'
   border: boolean
 }
 
@@ -13,7 +13,7 @@ export function terminal(text: string, options?: Partial<Options>): string {
     {
       ecLevel: 'M',
       parseUrl: false,
-      size: 'medium',
+      size: 'M',
       border: true,
     },
     options,
@@ -37,7 +37,7 @@ export function terminal(text: string, options?: Partial<Options>): string {
   let modulePattern: string[]
   let stepX: number, stepY: number
   switch (opts.size) {
-    case 'small':
+    case 'S':
       stepX = stepY = 2
       modulePattern = [
         '\u2588', // 00 \n 00
@@ -58,14 +58,14 @@ export function terminal(text: string, options?: Partial<Options>): string {
         ' ', //      11 \n 11
       ]
       break
-    case 'large':
+    case 'L':
       stepX = stepY = 1
       modulePattern = [
         '\u2588\u2588', // 0
         '  ', //           1
       ]
       break
-    case 'medium':
+    case 'M':
     default:
       stepX = 1
       stepY = 2
@@ -78,7 +78,7 @@ export function terminal(text: string, options?: Partial<Options>): string {
       break
   }
 
-  if (opts.size !== 'large') {
+  if (opts.size !== 'L') {
     if (oddRow) moduleData.push(new Array(moduleCount).fill(0))
   }
 
@@ -87,16 +87,16 @@ export function terminal(text: string, options?: Partial<Options>): string {
     for (let x = 0; x < moduleCount; x += stepX) {
       let pat = 0
       switch (opts.size) {
-        case 'small':
+        case 'S':
           pat |= moduleData[y][x] << 3
           pat |= moduleData[y][x + 1] << 2
           pat |= moduleData[y + 1][x] << 1
           pat |= moduleData[y + 1][x + 1]
           break
-        case 'large':
+        case 'L':
           pat = moduleData[y][x]
           break
-        case 'medium':
+        case 'M':
         default:
           pat |= moduleData[y][x] << 1
           pat |= moduleData[y + 1][x]
